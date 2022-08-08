@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "hwHYJW0tljLlubf8hbWbR+crgv1W07vMla69SfwdahE=",
+  "Source": "api_farmacia",
+  "BasePath": "_content/api_farmacia",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}

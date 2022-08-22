@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Sistema de Gestão de Distribuição de Dispositivos</title>
+    <link rel="stylesheet" href="~/css/output.css" />
+    <link rel="stylesheet" href="~/lib/izitoast/iziToast.min.css" />
+</head>
+
+<body>
+
+
+
+    <div class="loader">
+        <div class="sk-chase">
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+            <div class="sk-chase-dot"></div>
+        </div>
+    </div>
+
+
+
+    <script src="~/lib/jquery/jquery-3.6.0.min.js" asp-append-version="true"></script>
+    <script src="~/lib/sweetalert/sweetalert.min.js" asp-append-version="true"></script>
+    <script src="~/lib/izitoast/iziToast.min.js" asp-append-version="true"></script>
+    <script src="~/lib/jspdf/jspdf.umd.min.js" asp-append-version="true"></script>
+    <script src="~/lib/jspdf/jspdf.plugin.autotable.js" asp-append-version="true"></script>
+    <script src="~/lib/xlsx/xlsx.full.min.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/relatorios.js" asp-append-version="true"></script>
+
+    @{
+        if (ViewBag.logged)
+        {
+            <div class="w-screen h-screen bg-gray-100  text-gray-700">
+                <div class="drawer drawer-mobile">
+                    <input id="my-drawer-2" type="checkbox" class="drawer-toggle">
+                    <div class="drawer-content flex flex-col pt-5 relative">
+
+                        <div
+                        class=" fixed top-0 z-50 right-0 header  w-full h-14 mb-14  bg-sky-500 text-white flex items-center px-3 border-b border-gray-300">
+                            <img class="h-10 mr-4" src="../assets/logo-bai.png" alt="">
+
+                            <label for="my-drawer-2" class="btn btn-ghost drawer-button lg:hidden"
+                            style="margin-left:-30px; margin-right:-15px;">
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                    stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h16M4 18h7" />
+                                    </svg>
+                                </div>
+                            </label>
+                            <div class="w-full flex flex-wrap justify-between items-center">
+
+                                <div class="flex items-center">
+                                    <div class="ml-5 hidden md:block">Sistema de Gestão de Distribuição de Dispositivos</div>
+                                </div>
+
+                                <div class="flex items-center">
+                                    <div class="avatar online">
+                                        <div class="w-8 rounded-full">
+                                            <img src="~/@ViewBag.user.FOTO" />
+                                        </div>
+                                    </div>
+                                    <p class="ml-3 mr-0 md:mr-10 font-bold">@ViewBag.user.NOME</p>
+                                    <a class="btn btn-ghost flex items-center" href="~/utilizador/logout">
+                                        <div>
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none"
+                                            viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round"
+                                                d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                                            </svg>
+                                        </div>
+                                        <p class="ml-3"> sair </p>
+                                    </a>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div style="padding-left: 50px;"
+                        class="text-sm breadcrumbs font-bold flex items-center h-auto fixed top-14 overflow-hidden mt-10 p-2  md:px-10 md:pb-0">
+                            <ul>
+                                <li><a>Dashboard</a></li>
+                            </ul>
+                        </div>
+                        @RenderBody()
+                    </div>
+                    <div class="drawer-side border-r border-gray-300 mt-14  ">
+                        <label for="my-drawer-2  " class="drawer-overlay"></label>
+                        <ul id="menu" class="overflow-y-auto w-80 bg-base-100 text-base-content flex flex-col ">
+                            @* <li class="mb-1 px-4 pb-2 pt-3 bg-sky-500 text-white"><h1 class="text-2xl">SGDT</h1></li> *@
+                            <li class=" text-left btn btn-sm btn-ghost flex flex-col  rounded-none h-12 max-h-full">
+                                <a href="./dashboard" class="text-left w-full flex items-center">
+                                    <div>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                                        stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round"
+                                            d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                                        </svg>
+                                    </div>
+                                    <p class="ml-2">Dashboard</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+
+
+            @* Informacoe do produto *@
+
+            <div id="block_product_preview"
+            class="hidden flex fixed z-30 bg-black bg-opacity-50  w-screen h-screen  flex-col items-center justify-center top-0 right-0">
+                <div id="product_preview"
+                class="w-4/4 md:w-3/4 lg:w-2/4 p-10 bg-white rounded-lg shadow-2xl relative flex flex-col">
+                    <button onclick="$('#block_product_preview').addClass('hidden')"
+                    class="absolute rounded-tr-lg top-0 right-0 w-10 h-10 bg-red-500 text-white flex flex-col justify-center items-center">x</button>
+                    <div class="text-xl font-bold grid grid-cols-12 w-full py-2 border-b">
+                        <div class="col-span-4">IMEI:</div>
+                        <div id="CODIGO_DISPOSITIVO" class="font-normal col-span-8">CODIGO_DISPOSITIVO</div>
+                    </div>
+                    <div class="text-xl font-bold grid grid-cols-12 w-full py-2 border-b">
+                        <div class="col-span-4">MARCA:</div>
+                        <div id="MARCA" class="font-normal col-span-8">MARCA</div>
+                    </div>
+                    <div class="text-xl font-bold grid grid-cols-12 w-full py-2 border-b">
+                        <div class="col-span-4">MODELO:</div>
+                        <div id="MODELO" class="font-normal col-span-8">MODELO</div>
+                    </div>
+                    <div class="text-xl font-bold grid grid-cols-12 w-full py-2 border-b">
+                        <div class="col-span-4">TIPO DE PRODUTO:</div>
+                        <div id="PRODUTO" class="font-normal col-span-8">PRODUTO</div>
+                    </div>
+                    <div class="text-xl font-bold grid grid-cols-12 w-full py-2 border-b">
+                        <div class="col-span-4">LOTE DE ENTRADA:</div>
+                        <div id="LOTE_ENTRADA" class="font-normal col-span-8">LOTE_ENTRADA</div>
+                    </div>
+                    <div class="text-xl font-bold grid grid-cols-12 w-full py-2 border-b">
+                        <div class="col-span-4">LOTE DE SAIDA:</div>
+                        <div id="LOTE_SAIDA" class="font-normal col-span-8">LOTE_SAIDA</div>
+                    </div>
+                    <div class="text-xl font-bold grid grid-cols-12 w-full py-2 border-b">
+                        <div class="col-span-4">CENTRO DE DISTRIBUIÇÃO:</div>
+                        <div id="CENTRO_TRABALHO" class="font-normal col-span-8">CENTRO_TRABALHO</div>
+                    </div>
+                    <div class="text-xl font-bold grid grid-cols-12 w-full py-2 border-b">
+                        <div class="col-span-4">ENTREGADOR:</div>
+                        <div id="ENTREGADORE" class="font-normal col-span-8">ENTREGADORE</div>
+                    </div>
+                    <div class="text-xl font-bold grid grid-cols-12 w-full py-2 border-b">
+                        <div class="col-span-4">VALIDADO?:</div>
+                        <div id="VALIDADO" class="font-normal col-span-8">VALIDADO</div>
+                    </div>
+                    <div class="w-full flex justify-center items-center mt-5">
+                        <a href="./entradas?s=cod" id="BTN_DETAILS"
+                        class="btn btn-primary btn-sm bg-sky-500 hover:bg-sky-600 text-white border-none">Ver mais
+                            detalhes</a>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+
+                $.getJSON(base + "/modulos", { PER_PAGE: "1000" },
+                    function (data, textStatus, jqXHR) {
+                        var els = [];
+                        var childs = {};
+
+                        data.DATA.forEach(x => {
+                            if (x.COD_MODULO) {
+                                if (!childs[`menu_btn_${x.COD_MODULO}`]) {
+                                    childs[`menu_btn_${x.COD_MODULO}`] = { body: [] };
+                                }
+                                childs[`menu_btn_${x.COD_MODULO}`].body.push(`
+                                                        <li onclick="defineCurrent('trigger_${x.NM_MODULO.toLowerCase().split(' de ').join('').split(' ').join('')}'), setPath('${x.DEPENDENCIA[0].NM_MODULO + '|' + x.NM_MODULO}','${x.LINK}')" stape="${x.NM_MODULO}" id="${x.NM_MODULO.toLowerCase().split(' de ').join('').split(' ').join('')}" class="menu_btn_${x.ID_MODULO} text-left btn btn-sm btn-ghost flex flex-col border-0 rounded-none h-12 max-h-full">
+                                                            <a href="${x.LINK}"   class="text-left w-full flex items-center">
+                                                                <div class="avatar opacity-60">
+                                                                    <div class="w-8 rounded  bg-gray-100 p-2">
+                                                                        ${x.ICON ? ("<img style='width:20px; height:20px;' src='../" + x.ICON + "'/>") : ''}
+                                                                    </div>
+                                                                </div>
+                                                                <p class="ml-3">${x.NM_MODULO}</p>
+                                                            </a>
+                                                        </li>
+                                                    ` );
+                            } else {
+                                if (childs[`menu_btn_${x.ID_MODULO}`]) {
+                                    childs[`menu_btn_${x.ID_MODULO}`] = { ...childs[`menu_btn_${x.ID_MODULO}`], ...x }
+                                } else {
+                                    childs[`menu_btn_${x.ID_MODULO}`] = { ...x, body: [] };
+                                }
+                                els.push(`
+                                                        <li onclick="defineCurrent('trigger_${x.NM_MODULO.toLowerCase().split(' de ').join('').split(' ').join('')}'), setPath('${x.NM_MODULO}')" stape="${x.NM_MODULO}" tag="${x.LINK}" id="${x.NM_MODULO.toLowerCase().split(' de ').join('').split(' ').join('')}" class="menu_btn_${x.ID_MODULO} text-left btn btn-sm btn-ghost flex flex-col border-0 rounded-none h-12 max-h-full">
+                                                            <a href="${x.LINK}"   class="text-left w-full flex items-center">
+                                                                <div class="avatar opacity-60">
+                                                                    <div class="w-8 rounded  bg-gray-100 p-2">
+                                                                        ${x.ICON ? ("<img style='width:20px; height:20px;' src='../" + x.ICON + "'/>") : ''}
+                                                                    </div>
+                                                                </div>
+                                                                <p class="ml-3">${x.NM_MODULO}</p>
+                                                            </a>
+                                                        </li>
+                                                    ` );
+                            }
+                        });
+
+                        $('#menu').html(els.join("\n"));
+
+                        Object.keys(childs).forEach((e, index) => {
+                            var x = childs[e];
+                            if (x.body.length > 0) {
+                                $("." + e).replaceWith(
+                                    `
+                                                        <li  id="${x.NM_MODULO.toLowerCase().split(' de ').join('').split(' ').join('')}" class="btn btn-sm btn-ghost hover:bg-gray-100 max-h-full h-auto  text-left  flex flex-col border-0 rounded-none  max-h-full">
+                                                            <div  onclick="defineCurrent('trigger_${x.NM_MODULO.toLowerCase().split(' de ').join('').split(' ').join('')}')" tabindex="0" class="collapse  collapse-arrow p-0 w-full">
+                                                            <input id="trigger_${x.NM_MODULO.toLowerCase().split(' de ').join('').split(' ').join('')}" type="checkbox" /> 
+                                                            <div class="collapse-title flex items-center p-0 p-0 w-full">
+                                                                <div class="avatar opacity-60">
+                                                                    <div class="w-8 rounded  bg-gray-100 p-2">
+                                                                        ${x.ICON ? ("<img style='width:20px; height:20px;' src='../" + x.ICON + "'/>") : ''}
+                                                                    </div>
+                                                                </div>
+                                                                <p class="ml-3">${x.NM_MODULO}</p>
+                                                            </div>
+                                                            <div class="collapse-content p-0 w-full"> 
+                                                                <ul id="menu" class="overflow-y-auto w-full bg-base-100 text-base-content flex flex-col ">
+                                                                ${x.body.join("\n")}
+                                                                </ul>
+                                                            </div>
+                                                            </div>
+                                                        </li>                                
+                                                        `
+                                )
+                            }
+                        });
+                        var name = window.location.pathname.split("/")[window.location.pathname.split("/").length - 1];
+                        $("#" + name.toLowerCase()).addClass('border-l-4 border-red-400');
+
+                    }
+                );
+
+                pathsGen();
+
+            </script>
+
+        }
+        else
+        {
+            <div class="w-screen h-sreen overflow-hidden flex">
+                @RenderBody()
+            </div>
+        }
+    }
+
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+
+</html>

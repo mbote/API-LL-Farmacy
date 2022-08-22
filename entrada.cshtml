@@ -1,0 +1,616 @@
+@{
+    ViewData["Title"] = "Home Page";
+}
+        <h1 class="text-2xl ">Entradas</h1>
+
+
+<div id="list" class=" w-full h-full bg-gray-100  text-gray-700 flex  flex-col p-2 md:p-12 md:mt-32 lg:mt-48">
+
+    <div class=" mb-3 flex justify-between items-center">
+        <div class="flex items-center">
+            <button onclick="relatorioEntradas_lista()" class="btn btn-sm mr-2 ">
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                </div>
+                <p class="ml-2 ">Exportar Pdf</p>
+            </button>
+
+            <button onclick="filtros()" class="btn btn-sm mr-3 ">
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                    </svg>
+                </div>
+                <p class="ml-2">Filtro</p>
+            </button>
+
+            <button onclick="toggle('#add'),toggle('#list'),calcelEdit()" class="btn btn-sm ">
+                <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3m0 0v3m0-3h3m-3 0H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <p class="ml-2">Incluir</p>
+            </button>
+        </div>
+    </div>
+
+    <div class="overflow-x-auto w-full flex flex-col mt-5 relative">
+        <table class="table table-compact w-full print:fixed print:w-screen print:min-h-screen print:top-0 print:right-0 ">
+            <!-- head -->
+            <thead>
+                <tr>
+                    <th class=" bg-sky-500 text-white">#</th>
+                    <th class=" bg-sky-500 text-white">Referencia</th>
+                    <th class=" bg-sky-500 text-white">Código do Dispositivo</th>
+                    <th class=" bg-sky-500 text-white">Marca</th>
+                    <th class=" bg-sky-500 text-white">Modelo</th>
+                    <th class=" bg-sky-500 text-white">Dispositivo</th>
+                    <th class=" bg-sky-500 text-white">Estado</th>
+                    <th class=" bg-sky-500 text-white">Lote</th>
+                    <th class=" bg-sky-500 text-white">DATA DE Entrada</th>
+                    <th class=" bg-sky-500 text-white">Validado</th>
+                </tr>
+            </thead>
+
+            <tbody id="tabela_linhas">
+                <!-- row 1 -->
+                <!-- foot -->
+            <tfoot>
+                <tr class="bg-sky-600 text-white">
+                    <th class=" bg-sky-600 text-white h-11"> </th>
+                    <th class=" bg-sky-600 text-white h-11"> </th>
+                    <th class=" bg-sky-600 text-white h-11"> </th>
+                    <th class=" bg-sky-600 text-white h-11"> </th>
+                    <th class=" bg-sky-600 text-white h-11"> </th>
+                    <th class=" bg-sky-600 text-white h-11"> </th>
+                    <th class=" bg-sky-600 text-white h-11"> </th>
+                    <th class=" bg-sky-600 text-white h-11"> </th>
+                    <th class=" bg-sky-600 text-white h-11"> </th>
+                    <th class=" bg-sky-600 text-white h-11"> </th>
+                </tr>
+            </tfoot>
+
+        </table>
+
+        <div class="flex w-full justify-center items-center relative bottom-1 right-0  z-20" style="margin-top:-40px">
+                      <div class="mr-3 flex items-center  text-white text-md rounded-md px-2 py-1" style="margin-left: 330px;">  
+                <div class=" flex justify-right font-semibold items-center">
+
+                    <button id="first" class="btn btn-sm mr-1 bg-sky-600 hover:bg-sky-500 border-0">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+                        </svg>
+                    </button>
+                    <button id="prev_page" class="btn btn-sm mr-2 bg-sky-600 hover:bg-sky-500 border-0 ">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7" />
+                        </svg>
+                    </button> Página:  <input onchange="navigate_to(this)" id="current_page" class="px-2 bg-sky-700 text-center mx-2 py-1 rounded-lg outline-none w-32" type="number">  de: <span class="mr-3" id="total_page"></span>
+                    <button id="nex_page" class="btn btn-sm mr-1 bg-sky-600 hover:bg-sky-500 border-0 ">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </button>
+                    <button id="last" class="btn btn-sm mr-2 bg-sky-600 hover:bg-sky-500 border-0 ">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                        </svg>
+                    </button>
+
+                </div>
+            </div>
+            <div class="ml-3 flex items-center bg-sky-600 text-white text-md rounded-md px-2 py-1"  style="margin-left:-30px;">
+                <label class="font-semibold  whitespace-nowrap"> Total de Registos: <span id="total"></span></label>
+            </div>
+
+
+        </div>
+    </div>
+
+    <script>
+        $(function () {
+            $.getJSON(base + "/entradas/count", null,
+                function (data, textStatus, jqXHR) {
+                    paginate(data);
+                });
+        })
+    </script>
+
+</div>
+
+<div id="add" class="mt-6 hidden w-full h-full bg-gray-100  text-gray-700 flex  flex-col p-2 md:p-12">
+
+    <div class=" mb-3 flex justify-between items-center">
+        <h1 class="text-2xl "></h1>
+        <button onclick="toggle('#list'),toggle('#add'),calcelEdit()" class="btn btn-sm ">
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                </svg>
+            </div>
+            <p class="ml-2">Listar</p>
+        </button>
+    </div>
+
+    <form method="post" id="form" novalidate onsubmit="return false;">
+        <div class="w-full p-12 bg-white shadow-2xl shadow-gray-300 grid gird-cols-12">
+            <div class=" flex flex-col">
+                <div class=" flex justify-between items-center">
+                    <h1 class="text-2xl font-bold">Cadastro de Entradas de Dispositivos</h1>
+                    <div class="flex items-center">
+                        <div class="dropdown dropdown-end" data-tip="Baixar Modelo de importação">
+                            <label tabindex="0" class=" m-1 btn bg-sky-500 hover:bg-sky-600 border-0 shadow-lg shadow-gray-300">
+                                <div>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                    </svg>
+                                </div>
+                            </label>
+                            <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-60">
+                                <li data-tip="Modelo com apenas uma coluna para os IMEIs">
+                                    <a href="/assets/modelo.xlsx" class="" download="Modelo.xlsx">
+                                        <div class="mr-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                                            </svg>
+                                        </div>
+                                        Modelo 1 (Unitel)
+                                    </a>
+                                </li>
+                                <li data-tip="Modelo com 4 colunas para DoNumber, Carton Number, Do Item Number, IMEI">
+                                    <a href="/assets/modelo2.xlsx" class="" download="Modelo.xlsx">
+                                        <div class="mr-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                                            </svg>
+                                        </div>
+                                        Modelo 2 (BAI)
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <script>
+                            function Validar_Form() {
+                                Limpar_Bordas();
+                                $("#add").find("#REF_ENTRADA,#CODIGO_DISPOSITIVO").prop("required", null);
+                                if (!vlidate("#add", true)) {
+                                    return
+                                }
+                            }
+                            $("#btnAdd").click(function () {
+                                $("#add").find("#REF_ENTRADA,#CODIGO_DISPOSITIVO").prop("required", "required");
+                            })
+                        </script>
+
+                        <div class="dropdown dropdown-end" onclick="Validar_Form();">
+                            <label tabindex="0" class=" m-1 btn bg-emerald-500 hover:bg-emerald-600 border-0 shadow-lg shadow-gray-300">Importar</label>
+                            <ul tabindex="0" class="dropdown-content menu p-2 shadow bg-base-100 rounded-box w-60">
+                                <li>
+                                    <label for="file-input" class="">
+                                        <div class="mr-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                                            </svg>
+                                        </div>
+                                        Modelo 1 (Unitel)
+                                    </label>
+                                </li>
+                                <li>
+                                    <label for="file-input-2" class="">
+                                        <div class="mr-2">
+                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                                <path stroke-linecap="round" stroke-linejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+                                            </svg>
+                                        </div>
+                                        Modelo 2 (BAI)
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+                    <input id="file-input" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" onchange="importar()" type="file" class="hidden">
+                    <input id="file-input-2" accept=".csv,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,application/vnd.ms-excel" onchange="importar2()" type="file" class="hidden">
+                </div>
+                <p class="text-sm text-gray-400 mb-10">As Entradas são os produtos individuais</p>
+
+
+                <div class="grid md:grid-cols-2 grid-cols-1 mt-2 mb-5 gap-4">
+                    <div class="form-control relative group ">
+                        <label class="label flex items-center justify-between">
+                            <span class="label-text">Referencia</span>
+                            <div class="tooltip text-gray-500" data-tip="Adicione uma Descrição a esta Entrada">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+                        </label>
+                        <input required maxlength="20" id="REF_ENTRADA" name="REF_ENTRADA" type="text" placeholder="Informe a Referencia do Produto" class="input   bg-gray-100 w-full ">
+                    </div>
+                    <div class="form-control relative group">
+                        <label class="label flex items-center justify-between">
+                            <span class="label-text">Código do Dispositivo (IMEI)</span>
+
+                            <div class="tooltip tooltip-left text-gray-500" data-tip="IMEI deve ser único para cada Dispositivo.">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+
+                        </label>
+                        <input required maxlength="15" id="CODIGO_DISPOSITIVO" name="CODIGO_DISPOSITIVO" type="text" placeholder="Informe o Código do Produto" class="input   bg-gray-100 w-full ">
+
+                    </div>
+
+                </div>
+
+                <div class="grid md:grid-cols-2 grid-cols-1 mt-2 mb-5 gap-4">
+                    <div class="form-control ">
+                        <label class="label flex items-center justify-between">
+                            <span class="label-text">Marca do Dispositivo</span>
+
+                            <div class="tooltip  text-gray-500" data-tip="O dispositivo possui uma marca certo?">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+
+                        </label>
+                        <select required name="COD_MARCA" class="select bg-gray-100 w-full">
+                            <option disabled selected>Selecione uma Marca</option>
+                        </select>
+                    </div>
+                    <div class="form-control ">
+                        <label class="label flex items-center justify-between">
+                            <span class="label-text">Modelo do Dispositivo</span>
+
+                            <div class="tooltip tooltip-left text-gray-500" data-tip="O dispositivo possui um modelo certo?">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+
+                        </label>
+                        <select required name="COD_MODELO" class="select bg-gray-100 w-full">
+                            <option disabled selected>Selecione um Modelo</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="grid md:grid-cols-2 grid-cols-1 mt-2 mb-5 gap-4">
+                    <div class="form-control ">
+                        <label class="label flex items-center justify-between">
+                            <span class="label-text">Tipo de Dispositivos</span>
+
+                            <div class="tooltip text-gray-500" data-tip="Qual é o tipo de Produto desta Entrada?">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+
+                        </label>
+                        <select required name="COD_PRODUTOS" class="select bg-gray-100 w-full">
+                            <option disabled selected>Selecione um Tipo</option>
+                        </select>
+                    </div>
+                    <div class="form-control ">
+                        <label class="label items-center justify-between">
+                            <span class="label-text">Requisição</span>
+                            <div class="tooltip tooltip-left text-gray-500" data-tip="Em qual lote esta entrada pertence?">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+
+                        </label>
+                        <select required name="COD_SOLICITACAO_ENTRADA" class="select bg-gray-100 w-full">
+                            <option disabled selected>Seleciona uma Requisição	</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                <div class="grid md:grid-cols-2 grid-cols-1 mt-2 mb-5 gap-4">
+                    <div class="form-control ">
+                        <label class="label"><span class="label-text">Data de Entrada</span> </label>
+                        <input required id="DT_ENTRADA" name="DT_ENTRADA" type="date" placeholder="Informe a Data de Entrada do Produto" class="input   bg-gray-100 w-full ">
+                    </div>
+
+                    <div class="form-control ">
+                        <label class="label items-center justify-between">
+                            <span class="label-text">Lote de Entrada</span>
+
+                            <div class="tooltip tooltip-left text-gray-500" data-tip="Em qual lote esta entrada pertence?">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                                </svg>
+                            </div>
+
+                        </label>
+                        <select required name="COD_LOTE_ENTRADA" class="select bg-gray-100 w-full">
+                            <option disabled selected>Selecione um Lote de Entrada</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="flex mt-10 mb-5">
+                    <button id="btnAdd" onclick="save(makeForm('#add'), '/entradas', sucesso, erro)" class="hidden btn bg-sky-500 hover:bg-sky-600 border-0 mr-4   ">Salvar</button>
+                    <button onclick="save(makeForm('#add'), '/entradas', sucesso, erro, true)" class="btnEdit flex btn bg-sky-500 hover:bg-sky-600 border-0 border  mr-4 ">Alterar</button>
+                    <button onclick="deleteReg(makeForm('#add'), '/entradas', sucesso, erro)" class="btnEdit mr-4  flex btn text-white bg-red-400 hover:bg-red-500  border-0">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</div>
+
+<div id="loading" class="loading fixed w-screen h-screen top-0 right-0 bg-gray-700 bg-opacity-50 flex justify-center items-center z-50">
+
+    <div class="p-10 rounded-lg bg-white shadow-2xl shadow-gray-500 ">
+
+        <div class="flex items-center justify-center space-x-2 animate-bounce mt-3 mb-4">
+            <div class="w-8 h-8 bg-blue-400 rounded-full "></div>
+            <div class="w-8 h-8 bg-green-400 rounded-full animate-bounce"></div>
+            <div class="w-8 h-8 bg-gray-800 rounded-full"></div>
+        </div>
+
+        <p id="loading-label">--- ---- ---</p>
+
+    </div>
+
+</div>
+
+<div id="filtro" class=" z-30 text-gray-600 flex flex-col fixed right-0 top-20 w-2/6 p-10 bg-white shadow-2xl shadow-gray-300 rounded-md ">
+    <div class="flex items-center relative mb-3">
+        <button onclick="filtros()" class="btn btn-circle btn-sm absolute -top-9 -left-9 bg-sky-800 hover:bg-blue-900">
+            <div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+            </div>
+        </button>
+        <div class="mr-2">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+            </svg>
+        </div>
+        <p>Filtro avançado</p>
+    </div>
+
+    <div class="grid grid-cols-1 mt-2 mb-5 gap-4">
+        <div class="form-control ">
+            <label class="label"><span class="label-text">Referencia</span> </label>
+            <input id="REF_ENTRADA" name="REF_ENTRADA" type="text" placeholder="Informe a Referencia do Produto" class="input   bg-gray-100 w-full ">
+        </div>
+        <div class="form-control ">
+            <label class="label"><span class="label-text">Código do Dispositivo (IMEI)</span> </label>
+            <input id="CODIGO_DISPOSITIVO" name="CODIGO_DISPOSITIVO" type="text" placeholder="Informe o Código do Produto" class="input   bg-gray-100 w-full ">
+        </div>
+
+    </div>
+
+    <div class="grid grid-cols-1 mt-2 mb-5 gap-4">
+        <div class="form-control ">
+            <label class="label"><span class="label-text">Marca do Dispositivo</span> </label>
+            <select name="COD_MARCA" class="select bg-gray-100 w-full">
+                <option disabled selected>Selecione uma Marca</option>
+            </select>
+        </div>
+        <div class="form-control ">
+            <label class="label"><span class="label-text">Modelo do Dispositivo</span> </label>
+            <select name="COD_MODELO" class="select bg-gray-100 w-full">
+                <option disabled selected>Selecione um Modelo</option>
+            </select>
+        </div>
+    </div>
+    <div class="grid grid-cols-1 mt-2 mb-5 gap-4">
+
+        <div class="form-control ">
+            <label class="label"><span class="label-text">Estado</span> </label>
+            <select name="DESPACHADO" class="select bg-gray-100 w-full">
+                <option disabled selected>Selecione um Estado</option>
+                <option value="0">Despachado</option>
+                <option value="1">Em Stock</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-2 mt-2 mb-5 gap-4">
+        <div class="form-control ">
+            <label class="label"><span class="label-text">Tipo de Dispositivo</span> </label>
+            <select name="COD_PRODUTOS" class="select bg-gray-100 w-full">
+                <option disabled selected>Selecione um Tipo</option>
+            </select>
+        </div>
+        <div class="form-control ">
+            <label class="label"><span class="label-text">Lote de Entrada</span> </label>
+            <select name="COD_LOTE_ENTRADA" class="select bg-gray-100 w-full">
+                <option disabled selected>Selecione um Lote de Entrada</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-2 mt-2 mb-5 gap-4">
+        <div class="form-control ">
+            <label class="label"><span class="label-text">Data de Entrada</span> </label>
+            <input id="DT_ENTRADA" name="DT_ENTRADA" type="date" placeholder="Informe a Data de Entrada do Produto" class="input   bg-gray-100 w-full ">
+        </div>
+        <div class="form-control ">
+            <label class="label"><span class="label-text">Validação</span> </label>
+            <select name="VALIDADO" class="select bg-gray-100 w-full">
+                <option disabled selected>Selecione um Estado</option>
+                <option value="1">validado</option>
+                <option value="0">Não validado</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-2 mt-3 mb-5 gap-3 ">
+        <button id="btnFiltrar" onclick="exec_filtro(null, '/entradas')" class="max-w-max w-full min-w-full col-span-1  btn text-gray-500 bg-gray-50 hover:bg-gray-100 border mr-4   ">Remover Filtro</button>
+        <button id="btnFiltrar" onclick="exec_filtro(makeForm('#filtro'), '/entradas')" class="max-w-max w-full min-w-full col-span-1  btn bg-sky-800 hover:bg-blue-900 border mr-4   ">Filtrar</button>
+    </div>
+
+</div>
+
+<script src="~/lib/read-excel-file/read-excel-file.min.js"></script>
+
+<script>
+
+  var current =1;
+  var p = getParams();
+
+  if(p.get('s')){
+    edit('/entradas',p.get('s'));
+  }
+
+  if(p.get('current')){
+    current = p.get('current');
+  }
+  function exec_filtro(form, url){
+    filtrar(
+      (dados)=>{
+
+       $.getJSON(base+url, dados,
+          function (data, textStatus, jqXHR) {
+            $('#tabela_linhas').html("")
+              var els = [''];
+              console.log(data.DATA)
+            if(!data.DATA) data.DATA = [];
+            data.DATA.forEach((x,i)=>{
+              els.push( `
+              <tr onclick="edit('/entradas','${x.GUIDE}')" class="cursor-pointer hover">
+                <td>
+                  ${(x.NUMERO_ORDEM)}
+                </td>
+                <td>
+                  <div class="flex items-center space-x-3">
+                    <div>
+                      <div class="font-bold">${x.REF_ENTRADA??'Indefinido'}</div>
+                    </div>
+                  </div>
+                </td>
+                <td>
+                  ${x.CODIGO_DISPOSITIVO}
+                </td>
+                <td>${x.NM_MARCA}</td>
+                <td>${x.NM_MODELO}</td>
+                <td>${x.NM_PRODUTO}</td>
+                <td><span class="px-2 bg-gray-100 rounded-full">${x.COD_SAIDA?'Despachado':'Em Stock'} </span></td>
+                <td>${x.NM_LOTE_ENTRADA ||'--'}</td>
+                <td>${x.DT_ENTRADA ||'--'}</td>
+                <td><span class="px-2 ${x.VALIDADO?'bg-green-200':'bg-red-200'} rounded-full">${x.VALIDADO?'Sim':'Não'} </span></td>
+
+              </tr>
+            ` ) });
+
+
+
+                for(var i= data.DATA.length; i<15;i++ ){
+                  els.push( `
+                  <tr  class="cursor-pointer hover">
+                    <td>--</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                  </tr>
+                ` )
+                }
+
+
+
+              $('#tabela_linhas').append(els.join("\n"))
+            }
+        );
+      },
+      form,
+      {CURRENT:current}
+    )
+  }
+
+
+   $(function(){
+    $("#loading").hide();
+
+    exec_filtro(null,"/entradas");
+
+       //$.getJSON(base +"/solicitacaoentradas/by_Dispositivos_em_falta", null,
+
+       $.getJSON(base + "/solicitacaoentradas", null,
+      function (data, textStatus, jqXHR) {
+        var els = ['<option disabled selected>Selecione uma Solicitação</option>'];
+        data.DATA.forEach(x=>{
+          els.push( `<option value="${x.ID_SOLICITACAO_ENTRADA}">${(x.FORNECEDOR?x.FORNECEDOR[0].NM_FORNECEDOR:'--') + " - " + (x.PRODUTO?x.PRODUTO[0].NM_PRODUTO:'--') + " - " + (x.QUANTIDADE ||'--') + " - " + (x.MODELO?x.MODELO[0].NM_MODELO:'--') + " - " + (x.MARCA?x.MARCA[0].NM_MARCA:'--')}</option>` ) });
+          $('[name="COD_SOLICITACAO_ENTRADA"]').html(els.join("\n"));
+        }
+      );
+
+       $('[name="COD_SOLICITACAO_ENTRADA"]').on("change",function(el){
+           $.getJSON(base +"/loteentradas/by_solicitacao_entrada", {"COD_SOLICITACAO_ENTRADA": $(this).val().toString()},
+            function (data, textStatus, jqXHR) {
+              var els = ['<option disabled selected>Selecione um Lote de Entrada</option>'];
+              data.forEach(x=>{
+                els.push( `<option value="${x.ID_LOTE_ENTRADA}">${x.DESCRICAO}</option>` ) });
+                $('[name="COD_LOTE_ENTRADA"]').html(els.join("\n"))
+              }
+           );
+       });
+
+      $.getJSON(base+"/marcas", null,
+      function (data, textStatus, jqXHR) {
+        var els = ['<option disabled selected>Selecione uma Marca</option>'];
+        data.DATA.forEach(x=>{
+          els.push( `<option value="${x.ID_MARCA}">${x.NM_MARCA}</option>` ) });
+          $('[name="COD_MARCA"]').html(els.join("\n"))
+        }
+      );
+
+      $.getJSON(base+"/modelos", null,
+      function (data, textStatus, jqXHR) {
+        var els = ['<option disabled selected>Selecione um Modelo</option>'];
+        data.DATA.forEach(x=>{
+          els.push( `<option value="${x.ID_MODELO}">${x.NM_MODELO}</option>` ) });
+          $('[name="COD_MODELO"]').html(els.join("\n"))
+        }
+      );
+
+      $.getJSON(base+"/produtos", null,
+      function (data, textStatus, jqXHR) {
+        var els = ['<option disabled selected>Selecione um tipo</option>'];
+        data.DATA.forEach(x=>{
+          els.push( `<option value="${x.ID_PRODUTO}">${x.NM_PRODUTO}</option>` ) });
+          $('[name="COD_PRODUTOS"]').html(els.join("\n"))
+        }
+      );
+
+      @* $.getJSON(base+"/solicitacaosaidas", null,
+      function (data, textStatus, jqXHR) {
+        var els = ['<option disabled selected>Selecione um lote de Entrada</option>'];
+        data.DATA.forEach(x=>{
+          els.push( `<option value="${x.ID_SOLICITACAO_SAIDA}">${x.ID_SOLICITACAO_SAIDA}</option>` ) });
+          $('[name="COD_SAIDA"]').html(els.join("\n"))
+        }
+      ); *@
+
+     //$.getJSON(base+"/loteentradas", null,
+      //    function (data, textStatus, jqXHR) {
+      //  var els = ['<option disabled selected>Selecione um lote de Saida</option>'];
+      //  data.DATA.forEach(x=>{
+      //    els.push( `<option value="${x.ID_LOTE_ENTRADA}">${x.DESCRICAO}</option>` ) });
+      //    $('[name="COD_LOTE_ENTRADA"]').html(els.join("\n"))
+      //  }
+      //);
+  })
+
+</script>
+

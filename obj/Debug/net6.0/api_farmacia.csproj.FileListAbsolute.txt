@@ -159,3 +159,4 @@ C:\Users\Administrador\Desktop\LL\LL-FARMACIA\api_farmacia\obj\Debug\net6.0\refi
 C:\Users\Administrador\Desktop\LL\LL-FARMACIA\api_farmacia\obj\Debug\net6.0\api_farmacia.pdb
 C:\Users\Administrador\Desktop\LL\LL-FARMACIA\api_farmacia\obj\Debug\net6.0\api_farmacia.genruntimeconfig.cache
 C:\Users\Administrador\Desktop\LL\LL-FARMACIA\api_farmacia\obj\Debug\net6.0\ref\api_farmacia.dll
+C:\Users\Administrador\Desktop\LL\LL-FARMACIA\api_farmacia\bin\Debug\net6.0\Newtonsoft.Json.dll

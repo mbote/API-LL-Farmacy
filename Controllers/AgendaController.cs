@@ -24,5 +24,10 @@ namespace api_farmacia.Controllers
         {
             return new AgendaService().getAllAgendas(_configuration);
         }
+
+        [HttpPost]
+        public int Create(Agenda agenda){
+            return new AgendaService().Create(agenda, _configuration);
+        }
     }
 }
